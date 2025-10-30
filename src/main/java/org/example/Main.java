@@ -9,7 +9,6 @@ public class Main {
 
         System.out.println("\n3. Метод printColor():");
         printColor();
-
         System.out.println("\n4. Метод compareNumbers():");
         compareNumbers();
 
