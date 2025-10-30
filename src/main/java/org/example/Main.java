@@ -1,5 +1,4 @@
 public class Main {
-
     public static void main(String[] args) {
         // Тестирование всех методов
         System.out.println("1. Метод printThreeWords():");
