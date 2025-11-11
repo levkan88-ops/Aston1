@@ -33,7 +33,6 @@ public class ArrayProcessor {
                 {"9", "10", "11", "12"},
                 {"13", "14", "15", "16"}
         };
-
         try {
             System.out.println("Сумма: " + processArray(goodArray));
         } catch (MyArraySizeException | MyArrayDataException e) {
