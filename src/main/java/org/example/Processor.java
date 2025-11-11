@@ -6,7 +6,7 @@ class MyArrayDataException extends Exception {
     public MyArrayDataException(String message) { super(message); }
 }
 
-public class ArrayProcessor {
+public class Processor {
 
     public static int processArray(String[][] array) throws MyArraySizeException, MyArrayDataException {
         if (array.length != 4 || array[0].length != 4) {
