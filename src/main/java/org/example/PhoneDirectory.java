@@ -8,12 +8,12 @@ public class PhoneDirectory {
     }
 
     public void add(String lastName, String phoneNumber) {
-        // Если фамилия уже есть в справочнике, добавляем номер к существующему списку
-        phoneBook.computeIfAbsent(lastName, k -> new ArrayList<>()).add(phoneNumber);
+
+    phoneBook.computeIfAbsent(lastName, k -> new ArrayList<>()).add(phoneNumber);
     }
 
     public List<String> get(String lastName) {
-        // Возвращаем список номеров для фамилии или пустой список, если фамилии нет
+       
         return phoneBook.getOrDefault(lastName, new ArrayList<>());
     }
 
