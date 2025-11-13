@@ -1,45 +1,47 @@
-import java.util.*;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        Set<Student> students = new HashSet<>();
 
-        students.add(new Student("Алексей Панфилов", "ГР-101", 1,
-                Map.of("Математика", 4, "Физика", 3, "Информатика", 5)));
+        PhoneDirectory phoneDirectory = new PhoneDirectory();
 
-        students.add(new Student("Валентин Васильев", "ГР-102", 2,
-                Map.of("Математика", 2, "Физика", 2, "Информатика", 3)));
+        phoneDirectory.add("Алексеев", "+7-123-456-78-90");
+        phoneDirectory.add("Ветров", "+7-987-654-32-10");
+        phoneDirectory.add("Сидорова", "+7-111-222-33-44");
+        phoneDirectory.add("Алексеев", "+7-555-666-77-88");
+        phoneDirectory.add("Ветров", "+7-999-888-77-66");
 
-        students.add(new Student("Анна Белая", "ГР-101", 1,
-                Map.of("Математика", 5, "Физика", 4, "Информатика", 5)));
-
-        students.add(new Student("Василиса Львова", "ГР-103", 3,
-                Map.of("Математика", 3, "Физика", 3, "Информатика", 4)));
-
-        students.add(new Student("Андрей Афонасьев", "ГР-102", 2,
-                Map.of("Математика", 2, "Физика", 2, "Информатика", 2)));
-
-        System.out.println("Исходный список студентов:");
-        students.forEach(System.out::println);
+        phoneDirectory.printAll();
         System.out.println();
 
-        StudentManager.printStudents(students, 1);
-        StudentManager.printStudents(students, 2);
-        StudentManager.printStudents(students, 3);
+        System.out.println("Поиск номеров телефонов:");
 
-        StudentManager.removeUnderperformingStudents(students);
-        System.out.println("После отчисления студентов с средним баллом < 3:");
-        students.forEach(System.out::println);
-        System.out.println();
+        List<String> sidorovaPhones = phoneDirectory.get("Сидорова");
+        System.out.println("Сидорова: " + sidorovaPhones);
 
-        StudentManager.promoteStudents(students);
-        System.out.println("После перевода на следующий курс:");
-        students.forEach(System.out::println);
-        System.out.println();
+        List<String> ivanovPhones = phoneDirectory.get("Алексеев");
+        System.out.println("Алексеев: " + ivanovPhones);
 
-        StudentManager.printStudents(students, 1);
-        StudentManager.printStudents(students, 2);
-        StudentManager.printStudents(students, 3);
-        StudentManager.printStudents(students, 4);
+        List<String> petrovPhones = phoneDirectory.get("Ветров");
+        System.out.println("Ветров: " + petrovPhones);
+
+        List<String> unknownPhones = phoneDirectory.get("Кузнецов");
+        System.out.println("Кузнецов: " + unknownPhones);
+
+        System.out.println("\nОбработка результатов поиска:");
+        List<String> foundPhones = phoneDirectory.get("Алексеев");
+        if (foundPhones.isEmpty()) {
+            System.out.println("Фамилия Алексеев не найдена в справочнике.");
+        } else {
+            System.out.println("Найдено " + foundPhones.size() + " номер(а/ов) для Алексеев:");
+            for (int i = 0; i < foundPhones.size(); i++) {
+                System.out.println((i + 1) + ". " + foundPhones.get(i));
+            }
+        }
+
+        System.out.println("\nДополнительная информация:");
+        System.out.println("Всего уникальных фамилий: " + phoneDirectory.size());
+        System.out.println("Есть ли фамилия 'Сидорова'? " + phoneDirectory.containsLastName("Сидорова"));
+        System.out.println("Есть ли фамилия 'Кузнецов'? " + phoneDirectory.containsLastName("Кузнецов"));
     }
 }
