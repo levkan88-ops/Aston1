@@ -1,82 +1,83 @@
+import java.util.*;
+
+class PhoneDirectory {
+    private Map<String, List<String>> phoneBook;
+
+    public PhoneDirectory() {
+        phoneBook = new HashMap<>();
+    }
+
+    public void add(String lastName, String phoneNumber) {
+        phoneBook.computeIfAbsent(lastName, k -> new ArrayList<>()).add(phoneNumber);
+    }
+
+    public List<String> get(String lastName) {
+        return phoneBook.getOrDefault(lastName, new ArrayList<>());
+    }
+
+    public void printAll() {
+        if (phoneBook.isEmpty()) {
+            System.out.println("Телефонный справочник пуст.");
+            return;
+        }
+
+        System.out.println("Телефонный справочник:");
+        for (Map.Entry<String, List<String>> entry : phoneBook.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+    }
+
+    public boolean containsLastName(String lastName) {
+        return phoneBook.containsKey(lastName);
+    }
+
+    public int size() {
+        return phoneBook.size();
+    }
+}
+
 public class Main {
     public static void main(String[] args) {
-        // Задание 1: Животные
-        Dog dog = new Dog("Курама");
-        Cat cat = new Cat("Феликс");
 
-        dog.run(300);
-        cat.run(150);
-        cat.swim(5);
+        PhoneDirectory phoneDirectory = new PhoneDirectory();
 
-        Bowl bowl = new Bowl(10);
-        Cat[] cats = {new Cat("Снежок"), new Cat("Пётр")};
+        phoneDirectory.add("Алексеев", "+7-123-456-78-90");
+        phoneDirectory.add("Ветров", "+7-987-654-32-10");
+        phoneDirectory.add("Сидорова", "+7-111-222-33-44");
+        phoneDirectory.add("Алексеев", "+7-555-666-77-88");
+        phoneDirectory.add("Ветров", "+7-999-888-77-66");
 
-        for (Cat c : cats) c.eat(bowl, 6);
-        for (Cat c : cats) System.out.println(c.name + ": " + (c.full ? "сыт" : "голоден"));
+        phoneDirectory.printAll();
+        System.out.println();
 
-        // Задание 2: Фигуры
-        Figure circle = new Circle(5, "Зеленый", "Желтый");
-        Figure rect = new Rectangle(4, 6, "Оранжевый", "Серый");
+        System.out.println("Поиск номеров телефонов:");
 
-        circle.print();
-        rect.print();
+        List<String> sidorovaPhones = phoneDirectory.get("Сидорова");
+        System.out.println("Сидорова: " + sidorovaPhones);
+
+        List<String> ivanovPhones = phoneDirectory.get("Алексеев");
+        System.out.println("Алексеев: " + ivanovPhones);
+
+        List<String> petrovPhones = phoneDirectory.get("Ветров");
+        System.out.println("Ветров: " + petrovPhones);
+
+        List<String> unknownPhones = phoneDirectory.get("Кузнецов");
+        System.out.println("Кузнецов: " + unknownPhones);
+
+        System.out.println("\nОбработка результатов поиска:");
+        List<String> foundPhones = phoneDirectory.get("Алексеев");
+        if (foundPhones.isEmpty()) {
+            System.out.println("Фамилия Алексеев не найдена в справочнике.");
+        } else {
+            System.out.println("Найдено " + foundPhones.size() + " номер(а/ов) для Алексеев:");
+            for (int i = 0; i < foundPhones.size(); i++) {
+                System.out.println((i + 1) + ". " + foundPhones.get(i));
+            }
+        }
+
+        System.out.println("\nДополнительная информация:");
+        System.out.println("Всего уникальных фамилий: " + phoneDirectory.size());
+        System.out.println("Есть ли фамилия 'Сидорова'? " + phoneDirectory.containsLastName("Сидорova"));
+        System.out.println("Есть ли фамилия 'Кузнецов'? " + phoneDirectory.containsLastName("Кузнецов"));
     }
-}
-
-// Задание 1
-class Animal {
-    String name;
-    Animal(String name) { this.name = name; }
-}
-
-class Dog extends Animal {
-    Dog(String name) { super(name); }
-    void run(int d) { System.out.println(name + " пробежал " + d + "м"); }
-    void swim(int d) { System.out.println(name + " проплыл " + d + "м"); }
-}
-
-class Cat extends Animal {
-    boolean full = false;
-    Cat(String name) { super(name); }
-    void run(int d) { System.out.println(name + " пробежал " + d + "м"); }
-    void swim(int d) { System.out.println(name + " не плавает"); }
-    void eat(Bowl b, int food) { if (b.takeFood(food)) full = true; }
-}
-
-class Bowl {
-    int food;
-    Bowl(int food) { this.food = food; }
-    boolean takeFood(int amount) {
-        if (amount <= food) { food -= amount; return true; }
-        return false;
-    }
-}
-
-// Задание 2
-interface Figure {
-    double area();
-    double perimeter();
-    String fill();
-    String border();
-    default void print() {
-        System.out.printf("P=%.1f S=%.1f Цвет: %s Граница: %s%n", perimeter(), area(), fill(), border());
-    }
-}
-
-class Circle implements Figure {
-    double r; String f, b;
-    Circle(double r, String f, String b) { this.r = r; this.f = f; this.b = b; }
-    public double area() { return Math.PI * r * r; }
-    public double perimeter() { return 2 * Math.PI * r; }
-    public String fill() { return f; }
-    public String border() { return b; }
-}
-
-class Rectangle implements Figure {
-    double w, h; String f, b;
-    Rectangle(double w, double h, String f, String b) { this.w = w; this.h = h; this.f = f; this.b = b; }
-    public double area() { return w * h; }
-    public double perimeter() { return 2 * (w + h); }
-    public String fill() { return f; }
-    public String border() { return b; }
 }
